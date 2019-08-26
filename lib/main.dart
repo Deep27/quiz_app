@@ -1,29 +1,42 @@
 import 'package:flutter/material.dart';
 
+import 'question.dart';
+import 'answer.dart';
+
 void main() => runApp(QuizApp());
 
 class QuizApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return QuizAppState();
+    return _QuizAppState();
   }
 }
 
-class QuizAppState extends State<QuizApp> {
-  int questionIndex = 0;
+class _QuizAppState extends State<QuizApp> {
+  static const String _KEY_QUESTION_TEXT ='questionText';
+  static const String _KEY_QUESTION_ANSWERS = 'answers';
+  int _questionIndex = 0;
 
-  void answerQuestion() {
-    setState(() {
-      questionIndex = questionIndex + 1;
-    });
-    print(questionIndex);
+  void _answerQuestion() {
+    setState(() => _questionIndex++);
+    print(_questionIndex);
   }
 
   @override
   Widget build(BuildContext context) {
-    List<String> questions = [
-      'What\'s your favorite color?',
-      'What\'s your favorite animal?'
+    const List<Map<String, Object>> questions = const [
+      {
+        _KEY_QUESTION_TEXT: 'What\'s your favorite color?',
+        _KEY_QUESTION_ANSWERS: ['Black', 'Grey', 'White', 'Blue']
+      },
+      {
+        _KEY_QUESTION_TEXT: 'What\'s your favorite animal?',
+        _KEY_QUESTION_ANSWERS: ['Cat', 'Dog', 'Elephant', 'Snake']
+      },
+      {
+        _KEY_QUESTION_TEXT: 'What\'s your favorite taste?',
+        _KEY_QUESTION_ANSWERS: ['Bitter', 'Tasty', 'Salty', 'Sweet']
+      }
     ];
 
     return MaterialApp(
@@ -33,19 +46,11 @@ class QuizAppState extends State<QuizApp> {
           ),
           body: Column(
             children: <Widget>[
-              Text(questions[questionIndex]),
-              RaisedButton(
-                child: Text('Answer 1'),
-                onPressed: answerQuestion,
-              ),
-              RaisedButton(
-                child: Text('Answer 2'),
-                onPressed: answerQuestion,
-              ),
-              RaisedButton(
-                child: Text('Answer 2'),
-                onPressed: answerQuestion,
-              ),
+              Question(questions[_questionIndex][_KEY_QUESTION_TEXT]),
+              ...(questions[_questionIndex][_KEY_QUESTION_ANSWERS]
+                      as List<String>)
+                  .map((s) => Answer(s, _answerQuestion))
+                  .toList(),
             ],
           )),
     );
