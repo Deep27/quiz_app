@@ -4,7 +4,10 @@ import 'quiz_data.dart';
 import 'quiz.dart';
 import 'result.dart';
 
+import 'assignment/main.dart';
+
 void main() => runApp(QuizApp());
+//void main() => runApp(AssignmentApp());
 
 class QuizApp extends StatefulWidget {
   @override
